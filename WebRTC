@@ -1,0 +1,26 @@
+WebRTC=Web Real Time Commnication
+Provided Communication among the 2 client Without any server
+
+Working stage
+1.Signaling (SDP)
+    make connection with the computer via ip address
+2.Connecting
+3.Security
+
+
+we use WebRTC through the API,That are prebuilede
+1.MediaStream
+2.RTCPerConnection
+
+Backend
+1,Bcrypt(Hashing )
+2.Crypto
+3.Socket
+4.Express
+
+Frontend
+
+Material UI
+WebRTC
+React.js
+Axios

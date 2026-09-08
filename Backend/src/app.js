@@ -28,7 +28,8 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
     const connectWithRetry = async () => {
         try {
-            const connectiondb = await mongoose.connect(process.env.db);
+            const mongoUri = process.env.MONGO_URI || process.env.db || process.env.DB_URL;
+            const connectiondb = await mongoose.connect(mongoUri);
             console.log("MongoDB connected successfully at ", connectiondb.connection.host);
         } catch (err) {
             console.error("MongoDB connection attempt failed, retrying in 2 seconds...", err.message);

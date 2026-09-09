@@ -66,19 +66,19 @@ export default function Authentication() {
   };
 
   return (
-    <div className="app-container" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
+    <div className="app-container" style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 'clamp(16px, 4vw, 24px)' }}>
       <div className="bg-grid"></div>
 
-      <div className="panel" style={{ width: '100%', maxWidth: '420px', padding: '36px', position: 'relative', zIndex: 10, boxShadow: 'var(--shadow-lg)' }}>
+      <div className="panel" style={{ width: '100%', maxWidth: '420px', padding: 'clamp(20px, 5vw, 36px)', position: 'relative', zIndex: 10, boxShadow: 'var(--shadow-lg)' }}>
         {/* Brand Header */}
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', marginBottom: '16px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', marginBottom: '14px' }}>
             <div className="brand-icon" style={{ width: '36px', height: '36px' }}>
               <Video size={20} />
             </div>
             <span style={{ fontSize: '20px', fontWeight: 700, color: '#fff' }}>AuraMeet</span>
           </Link>
-          <h2 style={{ fontSize: '20px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>
+          <h2 style={{ fontSize: 'clamp(18px, 4vw, 20px)', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>
             {isSignUp ? 'Create an account' : 'Sign in to your account'}
           </h2>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -258,8 +258,10 @@ export default function Authentication() {
                   background: 'none',
                   border: 'none',
                   color: 'var(--text-muted)',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  padding: '4px'
                 }}
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
@@ -270,14 +272,14 @@ export default function Authentication() {
             type="submit" 
             disabled={loading}
             className="btn-primary" 
-            style={{ width: '100%', padding: '11px', marginTop: '6px' }}
+            style={{ width: '100%', padding: '11px', marginTop: '4px', fontSize: '14px' }}
           >
             {loading ? 'Please wait...' : isSignUp ? 'Create Account' : 'Sign In'}
             {!loading && <ArrowRight size={15} />}
           </button>
         </form>
 
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <div style={{ textAlign: 'center', marginTop: '18px' }}>
           <Link to="/" style={{ fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none' }}>
             ← Back to Home
           </Link>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../contexts/AuthContext';
 import { iceServers, BACKEND_URL } from '../utils/webrtcConfig';
@@ -352,38 +352,32 @@ export default function VideoMeet() {
   const remotePeerIds = Object.keys(remoteStreams);
   const totalParticipants = remotePeerIds.length + 1;
 
+  // Compute adaptive grid layout template
+  const getGridTemplate = () => {
+    if (totalParticipants === 1) return '1fr';
+    if (totalParticipants === 2) return 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))';
+    if (totalParticipants <= 4) return 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))';
+    return 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))';
+  };
+
   return (
-    <div style={{
-      width: '100vw',
-      height: '100vh',
-      background: 'var(--bg-app)',
-      color: 'var(--text-primary)',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      position: 'relative'
-    }}>
+    <div className="meet-wrapper">
       {/* Top Header */}
-      <header style={{
-        padding: '10px 20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        background: 'var(--bg-surface)',
-        borderBottom: '1px solid var(--border-subtle)',
-        zIndex: 50
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <header className="meet-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
           <div className="brand-icon" style={{ width: '28px', height: '28px' }}>
             <Video size={16} />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>{meetingCode}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '140px' }}>
+              {meetingCode}
+            </span>
             <button 
               onClick={handleCopyLink}
               className="btn-ghost" 
-              style={{ padding: '3px 8px', fontSize: '11px', background: 'var(--bg-surface-elevated)', border: '1px solid var(--border-default)', borderRadius: '4px' }}
+              style={{ padding: '3px 8px', fontSize: '11px', background: 'var(--bg-surface-elevated)', border: '1px solid var(--border-default)', borderRadius: '4px', flexShrink: 0 }}
               title="Copy Link"
+              aria-label="Copy meeting link"
             >
               {copiedLink ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
               <span>{copiedLink ? 'Copied' : 'Invite'}</span>
@@ -391,16 +385,20 @@ export default function VideoMeet() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: '#10b981' }}>
             <ShieldCheck size={14} />
-            <span>Encrypted Call</span>
+            <span style={{ display: 'inline-block' }}>Encrypted</span>
           </div>
 
           <button 
-            onClick={() => setParticipantsOpen(!participantsOpen)}
+            onClick={() => {
+              setParticipantsOpen(!participantsOpen);
+              if (!participantsOpen) setChatOpen(false);
+            }}
             className="btn-ghost"
             style={{ padding: '5px 10px', fontSize: '12px', background: participantsOpen ? 'var(--bg-surface-elevated)' : 'transparent', border: '1px solid var(--border-subtle)', borderRadius: '6px' }}
+            aria-label="Toggle participants list"
           >
             <Users size={14} />
             <span>{totalParticipants}</span>
@@ -412,46 +410,40 @@ export default function VideoMeet() {
         <div style={{
           background: 'rgba(239, 68, 68, 0.12)',
           borderBottom: '1px solid rgba(239, 68, 68, 0.25)',
-          padding: '6px 20px',
+          padding: '6px 16px',
           fontSize: '12px',
           color: '#fca5a5',
           display: 'flex',
           alignItems: 'center',
           gap: '6px'
         }}>
-          <AlertCircle size={14} />
+          <AlertCircle size={14} style={{ flexShrink: 0 }} />
           <span>{permissionError}</span>
         </div>
       )}
 
       {/* Main Workspace Stage */}
-      <div style={{ flex: 1, display: 'flex', position: 'relative', overflow: 'hidden', padding: '12px', gap: '12px' }}>
+      <div className="meet-workspace">
         
-        {/* Video Grid */}
-        <div style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: totalParticipants === 1 ? '1fr' : totalParticipants === 2 ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '12px',
-          alignItems: 'center',
-          justifyContent: 'center',
-          maxHeight: '100%',
-          overflowY: 'auto'
-        }}>
-          
-          {/* Local Tile */}
+        {/* Responsive Video Grid */}
+        <div 
+          className="meet-video-grid"
+          style={{ gridTemplateColumns: getGridTemplate() }}
+        >
+          {/* Local Participant Tile */}
           <div style={{
             position: 'relative',
             width: '100%',
             height: '100%',
-            minHeight: '220px',
+            minHeight: '180px',
             borderRadius: '12px',
             overflow: 'hidden',
             background: '#0e1118',
             border: '1px solid var(--border-subtle)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            aspectRatio: totalParticipants === 1 ? '16 / 9' : 'auto'
           }}>
             <video 
               ref={localVideoRef} 
@@ -478,45 +470,46 @@ export default function VideoMeet() {
                 gap: '6px'
               }}>
                 <div style={{
-                  width: '52px',
-                  height: '52px',
+                  width: '48px',
+                  height: '48px',
                   borderRadius: '50%',
                   background: 'var(--primary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '20px',
+                  fontSize: '18px',
                   fontWeight: 700,
                   color: '#fff'
                 }}>
                   {currentUserName[0]?.toUpperCase() || 'Y'}
                 </div>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Camera is Off</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Camera Off</span>
               </div>
             )}
 
             <div style={{
               position: 'absolute',
-              bottom: '10px',
-              left: '10px',
-              right: '10px',
+              bottom: '8px',
+              left: '8px',
+              right: '8px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              gap: '6px'
             }}>
               <div className="participant-name-tag">
                 <span>{currentUserName} (You)</span>
-                {screenSharing && <span style={{ color: '#38bdf8', fontSize: '10px' }}>• Sharing Screen</span>}
+                {screenSharing && <span style={{ color: '#38bdf8', fontSize: '10px' }}>• Screen</span>}
               </div>
 
               <div className={`tile-badge-icon ${!micActive ? 'muted' : ''}`}>
-                {!micActive ? <MicOff size={12} /> : <Mic size={12} className="text-emerald-400" />}
+                {!micActive ? <MicOff size={11} /> : <Mic size={11} className="text-emerald-400" />}
               </div>
             </div>
           </div>
 
-          {/* Remote Tiles */}
+          {/* Remote Video Tiles */}
           {remotePeerIds.map((peerId) => (
             <RemoteVideoTile 
               key={peerId} 
@@ -528,95 +521,101 @@ export default function VideoMeet() {
           {remotePeerIds.length === 0 && (
             <div style={{
               position: 'absolute',
-              top: '20px',
-              right: '20px',
+              top: '16px',
+              right: '16px',
               background: 'var(--bg-surface)',
               border: '1px solid var(--border-default)',
               borderRadius: '8px',
-              padding: '10px 14px',
+              padding: '8px 12px',
               fontSize: '12px',
-              color: 'var(--text-secondary)'
+              color: 'var(--text-secondary)',
+              boxShadow: 'var(--shadow-sm)',
+              maxWidth: 'calc(100% - 32px)'
             }}>
-              Share this meeting link to invite others.
+              Share this meeting code with others to join.
             </div>
           )}
-
         </div>
 
-        {/* Chat Drawer */}
+        {/* Chat Drawer / Mobile Slide-Over Overlay */}
         {chatOpen && (
-          <div className="chat-sidebar" style={{ width: '320px', height: '100%', borderRadius: '12px', zIndex: 60 }}>
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>Meeting Chat</span>
-              <button onClick={() => setChatOpen(false)} className="btn-ghost" style={{ padding: '3px' }}>
-                <X size={16} />
-              </button>
-            </div>
+          <div className="meet-drawer-overlay" onClick={() => setChatOpen(false)}>
+            <div className="chat-sidebar" style={{ width: '320px', height: '100%', borderRadius: '12px', zIndex: 60 }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>Meeting Chat</span>
+                <button onClick={() => setChatOpen(false)} className="btn-ghost" style={{ padding: '4px' }} aria-label="Close Chat">
+                  <X size={16} />
+                </button>
+              </div>
 
-            <div className="chat-messages">
-              {messages.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '30px 10px', color: 'var(--text-muted)', fontSize: '12px' }}>
-                  No messages yet.
-                </div>
-              ) : (
-                messages.map(msg => (
-                  <div key={msg.id} className={`chat-bubble ${msg.isSelf ? 'sent' : 'received'}`}>
-                    <div style={{ fontSize: '11px', opacity: 0.8, marginBottom: '2px' }}>
-                      {msg.sender} • {msg.time}
-                    </div>
-                    <div>{msg.text}</div>
+              <div className="chat-messages">
+                {messages.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '30px 10px', color: 'var(--text-muted)', fontSize: '12px' }}>
+                    No messages yet.
                   </div>
-                ))
-              )}
-              <div ref={chatBottomRef} />
-            </div>
+                ) : (
+                  messages.map(msg => (
+                    <div key={msg.id} className={`chat-bubble ${msg.isSelf ? 'sent' : 'received'}`}>
+                      <div style={{ fontSize: '10px', opacity: 0.8, marginBottom: '2px' }}>
+                        {msg.sender} • {msg.time}
+                      </div>
+                      <div>{msg.text}</div>
+                    </div>
+                  ))
+                )}
+                <div ref={chatBottomRef} />
+              </div>
 
-            <form onSubmit={handleSendMessage} style={{ padding: '10px', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '6px' }}>
-              <input 
-                type="text"
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                placeholder="Message..."
-                style={{
-                  flex: 1,
-                  background: 'var(--bg-app)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: '6px',
-                  padding: '8px 10px',
-                  color: '#fff',
-                  fontSize: '13px',
-                  outline: 'none'
-                }}
-              />
-              <button type="submit" className="btn-primary" style={{ padding: '8px 12px', borderRadius: '6px' }}>
-                <Send size={13} />
-              </button>
-            </form>
+              <form onSubmit={handleSendMessage} style={{ padding: '10px', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '6px' }}>
+                <input 
+                  type="text"
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  placeholder="Type a message..."
+                  style={{
+                    flex: 1,
+                    background: 'var(--bg-app)',
+                    border: '1px solid var(--border-default)',
+                    borderRadius: '6px',
+                    padding: '8px 10px',
+                    color: '#fff',
+                    fontSize: '13px',
+                    outline: 'none',
+                    minWidth: 0
+                  }}
+                />
+                <button type="submit" className="btn-primary" style={{ padding: '8px 12px', borderRadius: '6px', flexShrink: 0 }} aria-label="Send message">
+                  <Send size={13} />
+                </button>
+              </form>
+            </div>
           </div>
         )}
 
-        {/* Participants Drawer */}
+        {/* Participants Drawer / Mobile Slide-Over Overlay */}
         {participantsOpen && (
-          <div className="chat-sidebar" style={{ width: '260px', height: '100%', borderRadius: '12px', zIndex: 60 }}>
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>Participants ({totalParticipants})</span>
-              <button onClick={() => setParticipantsOpen(false)} className="btn-ghost" style={{ padding: '3px' }}>
-                <X size={16} />
-              </button>
-            </div>
-
-            <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', background: 'var(--bg-surface-elevated)', borderRadius: '6px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 500, color: '#fff' }}>{currentUserName} (You)</span>
-                {micActive ? <Mic size={13} className="text-emerald-400" /> : <MicOff size={13} className="text-rose-400" />}
+          <div className="meet-drawer-overlay" onClick={() => setParticipantsOpen(false)}>
+            <div className="chat-sidebar" style={{ width: '280px', height: '100%', borderRadius: '12px', zIndex: 60 }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>Participants ({totalParticipants})</span>
+                <button onClick={() => setParticipantsOpen(false)} className="btn-ghost" style={{ padding: '4px' }} aria-label="Close Participants">
+                  <X size={16} />
+                </button>
               </div>
 
-              {remotePeerIds.map(peerId => (
-                <div key={peerId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', background: 'var(--bg-app)', borderRadius: '6px' }}>
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Peer #{peerId.substring(0, 5)}</span>
-                  <span style={{ fontSize: '11px', color: '#10b981' }}>Connected</span>
+              <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', background: 'var(--bg-surface-elevated)', borderRadius: '6px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 500, color: '#fff' }}>{currentUserName} (You)</span>
+                  {micActive ? <Mic size={13} className="text-emerald-400" /> : <MicOff size={13} className="text-rose-400" />}
                 </div>
-              ))}
+
+                {remotePeerIds.map(peerId => (
+                  <div key={peerId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 10px', background: 'var(--bg-app)', borderRadius: '6px' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Peer #{peerId.substring(0, 5)}</span>
+                    <span style={{ fontSize: '11px', color: '#10b981' }}>Connected</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -624,50 +623,47 @@ export default function VideoMeet() {
       </div>
 
       {/* Bottom Control Dock */}
-      <footer style={{
-        padding: '12px 20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--bg-surface)',
-        borderTop: '1px solid var(--border-subtle)',
-        zIndex: 50
-      }}>
+      <footer className="meet-footer">
         <div className="control-dock" style={{ margin: 0 }}>
           <button 
             onClick={toggleMic}
             className={`dock-btn ${!micActive ? 'off' : ''}`}
             title={micActive ? 'Mute' : 'Unmute'}
+            aria-label="Toggle Microphone"
           >
-            {micActive ? <Mic size={18} /> : <MicOff size={18} />}
+            {micActive ? <Mic size={17} /> : <MicOff size={17} />}
           </button>
 
           <button 
             onClick={toggleVideo}
             className={`dock-btn ${!videoActive ? 'off' : ''}`}
             title={videoActive ? 'Turn Off Camera' : 'Turn On Camera'}
+            aria-label="Toggle Camera"
           >
-            {videoActive ? <Video size={18} /> : <VideoOff size={18} />}
+            {videoActive ? <Video size={17} /> : <VideoOff size={17} />}
           </button>
 
           <button 
             onClick={toggleScreenShare}
             className={`dock-btn ${screenSharing ? 'active' : ''}`}
             title={screenSharing ? 'Stop Screen Share' : 'Share Screen'}
+            aria-label="Toggle Screen Share"
           >
-            <Share2 size={18} />
+            <Share2 size={17} />
           </button>
 
           <button 
             onClick={() => {
               setChatOpen(!chatOpen);
+              if (!chatOpen) setParticipantsOpen(false);
               setUnreadChatCount(0);
             }}
             className={`dock-btn ${chatOpen ? 'active' : ''}`}
             style={{ position: 'relative' }}
             title="Chat"
+            aria-label="Toggle Chat"
           >
-            <MessageSquare size={18} />
+            <MessageSquare size={17} />
             {unreadChatCount > 0 && !chatOpen && (
               <span style={{
                 position: 'absolute',
@@ -693,8 +689,9 @@ export default function VideoMeet() {
             onClick={handleLeaveMeeting}
             className="dock-btn danger"
             title="Leave Meeting"
+            aria-label="Leave Meeting"
           >
-            <PhoneOff size={18} />
+            <PhoneOff size={17} />
           </button>
         </div>
       </footer>
@@ -712,7 +709,8 @@ export default function VideoMeet() {
           fontSize: '12px',
           color: '#fff',
           boxShadow: 'var(--shadow-md)',
-          zIndex: 100
+          zIndex: 100,
+          whiteSpace: 'nowrap'
         }}>
           {toastMessage}
         </div>
@@ -735,7 +733,7 @@ function RemoteVideoTile({ peerId, stream }) {
       position: 'relative',
       width: '100%',
       height: '100%',
-      minHeight: '220px',
+      minHeight: '180px',
       borderRadius: '12px',
       overflow: 'hidden',
       background: '#0e1118',
@@ -753,9 +751,9 @@ function RemoteVideoTile({ peerId, stream }) {
 
       <div style={{
         position: 'absolute',
-        bottom: '10px',
-        left: '10px',
-        right: '10px',
+        bottom: '8px',
+        left: '8px',
+        right: '8px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -764,7 +762,7 @@ function RemoteVideoTile({ peerId, stream }) {
         <div className="participant-name-tag">
           <span>Peer #{peerId.substring(0, 5)}</span>
         </div>
-        <span style={{ fontSize: '11px', color: '#10b981' }}>HD</span>
+        <span style={{ fontSize: '10px', color: '#10b981', background: 'rgba(0,0,0,0.6)', padding: '2px 5px', borderRadius: '4px' }}>HD</span>
       </div>
     </div>
   );

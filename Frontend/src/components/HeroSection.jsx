@@ -8,7 +8,6 @@ import {
   MessageSquare, 
   Hand, 
   PhoneOff, 
-  ArrowRight, 
   Users, 
   Settings, 
   Plus,
@@ -90,16 +89,16 @@ export default function HeroSection({ onStartInstantMeeting, onJoinMeeting, onOp
         <button 
           onClick={onStartInstantMeeting}
           className="btn-primary" 
-          style={{ padding: '12px 24px', fontSize: '15px' }}
+          style={{ padding: '11px 20px', fontSize: '14px' }}
         >
-          <Plus size={18} />
+          <Plus size={17} />
           New Meeting
         </button>
 
         <button
           onClick={onOpenGreenRoom}
           className="btn-secondary"
-          style={{ padding: '12px 18px', fontSize: '14px' }}
+          style={{ padding: '11px 16px', fontSize: '14px' }}
         >
           <Settings size={16} />
           Device Check
@@ -109,37 +108,37 @@ export default function HeroSection({ onStartInstantMeeting, onJoinMeeting, onOp
           <input 
             type="text"
             className="join-input"
-            placeholder="Enter a meeting code or link"
+            placeholder="Enter meeting code or link"
             value={meetingCode}
             onChange={(e) => setMeetingCode(e.target.value)}
           />
           <button 
             type="submit" 
             className="btn-primary" 
-            style={{ padding: '8px 16px', fontSize: '13px' }}
+            style={{ padding: '8px 14px', fontSize: '13px', flexShrink: 0 }}
           >
             Join
           </button>
         </form>
       </div>
 
-      {/* Clean Meeting Client Mockup */}
+      {/* Meeting Client Mockup */}
       <div className="mockup-container">
         <div className="mockup-frame">
           <div className="mockup-header">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981' }}></div>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff' }}>Meeting: #team-standup-sync</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', flexShrink: 0 }}></div>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap' }}>#team-standup-sync</span>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '13px', color: '#9ca3af' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Users size={14} />
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: '#9ca3af' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Users size={13} />
                 <span>4 in call</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10b981' }}>
-                <ShieldCheck size={14} />
-                <span>End-to-End Encrypted</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#10b981' }}>
+                <ShieldCheck size={13} />
+                <span>E2E Encrypted</span>
               </div>
             </div>
           </div>
@@ -158,6 +157,7 @@ export default function HeroSection({ onStartInstantMeeting, onJoinMeeting, onOp
                       src={p.avatar} 
                       alt={p.name} 
                       className="video-tile-img"
+                      loading="lazy"
                     />
                     <div className="video-overlay">
                       <div className="participant-name-tag">
@@ -166,7 +166,7 @@ export default function HeroSection({ onStartInstantMeeting, onJoinMeeting, onOp
                       </div>
 
                       <div className={`tile-badge-icon ${p.muted ? 'muted' : ''}`}>
-                        {p.muted ? <MicOff size={12} /> : <Mic size={12} className="text-emerald-400" />}
+                        {p.muted ? <MicOff size={11} /> : <Mic size={11} className="text-emerald-400" />}
                       </div>
                     </div>
                   </div>
@@ -180,48 +180,54 @@ export default function HeroSection({ onStartInstantMeeting, onJoinMeeting, onOp
                 className={`dock-btn ${!isMicOn ? 'off' : ''}`}
                 onClick={() => setIsMicOn(!isMicOn)}
                 title={isMicOn ? 'Mute Mic' : 'Unmute Mic'}
+                aria-label="Toggle Mic"
               >
-                {isMicOn ? <Mic size={18} /> : <MicOff size={18} />}
+                {isMicOn ? <Mic size={17} /> : <MicOff size={17} />}
               </button>
 
               <button 
                 className={`dock-btn ${!isVideoOn ? 'off' : ''}`}
                 onClick={() => setIsVideoOn(!isVideoOn)}
                 title={isVideoOn ? 'Turn Off Camera' : 'Turn On Camera'}
+                aria-label="Toggle Camera"
               >
-                {isVideoOn ? <Video size={18} /> : <VideoOff size={18} />}
+                {isVideoOn ? <Video size={17} /> : <VideoOff size={17} />}
               </button>
 
               <button 
                 className="dock-btn"
                 title="Share Screen"
+                aria-label="Share Screen"
                 onClick={() => {}}
               >
-                <Share2 size={18} />
+                <Share2 size={17} />
               </button>
 
               <button 
                 className={`dock-btn ${isHandRaised ? 'active' : ''}`}
                 onClick={() => setIsHandRaised(!isHandRaised)}
                 title="Raise Hand"
+                aria-label="Raise Hand"
               >
-                <Hand size={18} />
+                <Hand size={17} />
               </button>
 
               <button 
                 className="dock-btn"
                 title="Chat"
+                aria-label="Chat"
                 onClick={() => {}}
               >
-                <MessageSquare size={18} />
+                <MessageSquare size={17} />
               </button>
 
               <button 
                 className="dock-btn danger"
                 title="Leave Meeting"
+                aria-label="Leave Meeting"
                 onClick={() => {}}
               >
-                <PhoneOff size={18} />
+                <PhoneOff size={17} />
               </button>
             </div>
           </div>

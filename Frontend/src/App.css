@@ -1,6 +1,7 @@
 /* App Layout */
 .app-container {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background-color: var(--bg-app);
@@ -8,7 +9,7 @@
   position: relative;
 }
 
-/* Subtle background grid pattern */
+/* Ambient subtle background grid */
 .bg-grid {
   position: absolute;
   inset: 0;
@@ -20,26 +21,30 @@
   z-index: 0;
 }
 
-/* Navigation Header */
+/* ==========================================================================
+   Navigation Header & Mobile Menu Drawer
+   ========================================================================== */
 .navbar-wrapper {
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background: rgba(10, 12, 16, 0.85);
+  background: rgba(10, 12, 16, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
+  padding-top: var(--sat);
 }
 
 .navbar {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .brand-logo {
@@ -51,6 +56,7 @@
   font-size: 17px;
   color: #fff;
   letter-spacing: -0.2px;
+  flex-shrink: 0;
 }
 
 .brand-icon {
@@ -62,12 +68,13 @@
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   list-style: none;
 }
 
@@ -77,6 +84,7 @@
   font-size: 14px;
   font-weight: 500;
   transition: color 0.15s ease;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -86,51 +94,158 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* Hero Section */
+/* Mobile Hamburger Button */
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: var(--bg-surface-hover);
+}
+
+/* Mobile Menu Overlay Drawer */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.mobile-menu-drawer {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  padding: calc(var(--sat) + 64px) 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-lg);
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: var(--bg-surface-elevated);
+}
+
+.mobile-nav-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 16px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-actions {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+/* ==========================================================================
+   Hero Section & Action Bar
+   ========================================================================== */
 .hero-section {
   position: relative;
   z-index: 10;
-  padding: 80px 24px 40px;
+  padding: 60px 20px 30px;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
 }
 
 .hero-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 14px;
+  padding: 6px 14px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  max-width: 100%;
+  text-align: left;
 }
 
 .hero-title {
-  font-size: clamp(34px, 5vw, 56px);
+  font-size: clamp(28px, 6vw, 56px);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -1.2px;
   max-width: 820px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   color: #ffffff;
 }
 
 .hero-subtitle {
-  font-size: clamp(15px, 1.8vw, 18px);
+  font-size: clamp(14px, 2vw, 18px);
   color: var(--text-secondary);
   max-width: 620px;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
   line-height: 1.6;
 }
 
@@ -140,10 +255,10 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 48px;
+  gap: 10px;
+  margin-bottom: 40px;
   width: 100%;
-  max-width: 640px;
+  max-width: 680px;
 }
 
 .join-input-group {
@@ -153,8 +268,8 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   padding: 4px 6px 4px 14px;
-  flex: 1;
-  min-width: 260px;
+  flex: 1 1 240px;
+  min-width: 0;
   transition: border-color 0.15s ease;
 }
 
@@ -169,13 +284,34 @@
   color: #ffffff;
   font-size: 14px;
   width: 100%;
+  min-width: 0;
 }
 
 .join-input::placeholder {
   color: var(--text-muted);
 }
 
-/* Meeting Mockup Frame */
+@media (max-width: 640px) {
+  .hero-section {
+    padding: 40px 16px 20px;
+  }
+  .action-bar {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .action-bar > button,
+  .action-bar > .join-input-group {
+    width: 100%;
+  }
+  .hero-pill {
+    font-size: 12px;
+  }
+}
+
+/* ==========================================================================
+   Meeting Mockup Frame & Interactive Controls
+   ========================================================================== */
 .mockup-container {
   width: 100%;
   max-width: 1000px;
@@ -195,6 +331,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 12px 18px;
   background: var(--bg-surface-elevated);
   border-bottom: 1px solid var(--border-subtle);
@@ -214,6 +352,10 @@
 @media (max-width: 680px) {
   .video-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .mockup-content {
+    padding: 10px;
   }
 }
 
@@ -239,23 +381,28 @@
 .video-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.75) 100%);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 8px 10px;
+  gap: 8px;
 }
 
 .participant-name-tag {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   padding: 3px 8px;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
 }
 
 .tile-badge-icon {
@@ -267,6 +414,7 @@
   align-items: center;
   justify-content: center;
   color: white;
+  flex-shrink: 0;
 }
 
 .tile-badge-icon.muted {
@@ -279,12 +427,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-default);
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 12px;
   width: fit-content;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -300,6 +450,7 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
 .dock-btn:hover {
@@ -331,17 +482,68 @@
   color: #f87171;
 }
 
-/* Sections */
+@media (max-width: 480px) {
+  .control-dock {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+  .dock-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ==========================================================================
+   Meeting Playground (Live Layout Simulator)
+   ========================================================================== */
+.playground-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  min-height: 440px;
+}
+
+.playground-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+.playground-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .playground-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .playground-layout-grid .chat-sidebar {
+    height: 320px;
+  }
+}
+
+/* ==========================================================================
+   Sections, Bento Features & Stats
+   ========================================================================== */
 .section-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 70px 24px;
+  padding: 60px 20px;
+  width: 100%;
 }
 
 .section-header {
   text-align: center;
   max-width: 600px;
-  margin: 0 auto 48px;
+  margin: 0 auto 40px;
+  padding: 0 8px;
 }
 
 .section-tag {
@@ -357,17 +559,27 @@
 }
 
 .section-title {
-  font-size: clamp(26px, 3.5vw, 36px);
+  font-size: clamp(24px, 4vw, 36px);
   font-weight: 700;
   letter-spacing: -0.6px;
   color: #ffffff;
   margin-bottom: 12px;
+  line-height: 1.2;
 }
 
 .section-description {
-  font-size: 15px;
+  font-size: clamp(14px, 1.8vw, 15px);
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .section-container {
+    padding: 40px 16px;
+  }
+  .section-header {
+    margin-bottom: 28px;
+  }
 }
 
 /* Bento Grid */
@@ -380,12 +592,14 @@
 @media (max-width: 900px) {
   .bento-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .bento-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 }
 
@@ -393,7 +607,7 @@
   grid-column: span 2;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .bento-col-span-2 {
     grid-column: span 1;
   }
@@ -407,7 +621,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 220px;
+  min-height: 200px;
+}
+
+@media (max-width: 480px) {
+  .bento-card {
+    padding: 18px;
+  }
 }
 
 .bento-icon-wrapper {
@@ -444,9 +664,17 @@
   margin-top: 32px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }
 
@@ -459,7 +687,7 @@
 }
 
 .stat-number {
-  font-size: 28px;
+  font-size: clamp(22px, 3.5vw, 28px);
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 4px;
@@ -478,11 +706,12 @@
   gap: 20px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .pricing-grid {
     grid-template-columns: 1fr;
     max-width: 440px;
     margin: 0 auto;
+    gap: 16px;
   }
 }
 
@@ -493,6 +722,12 @@
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .pricing-card {
+    padding: 20px 18px;
+  }
 }
 
 .pricing-card.featured {
@@ -507,6 +742,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
 }
 
 .faq-item {
@@ -521,6 +757,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 16px 20px;
   background: transparent;
   border: none;
@@ -538,17 +775,32 @@
   line-height: 1.6;
 }
 
-/* Modal */
+@media (max-width: 480px) {
+  .faq-question {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  .faq-answer {
+    padding: 0 16px 14px;
+    font-size: 13px;
+  }
+}
+
+/* ==========================================================================
+   Modals & Drawers
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 16px;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
@@ -557,11 +809,26 @@
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 520px;
-  overflow: hidden;
+  max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
   box-shadow: var(--shadow-lg);
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Chat Sidebar */
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-end;
+  }
+  .modal-content {
+    max-height: 92vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+/* Chat Sidebar & Drawer */
 .chat-sidebar {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
@@ -577,6 +844,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .chat-bubble {
@@ -584,6 +852,7 @@
   border-radius: 8px;
   font-size: 13px;
   max-width: 85%;
+  word-break: break-word;
 }
 
 .chat-bubble.received {
@@ -598,15 +867,102 @@
   align-self: flex-end;
 }
 
+/* ==========================================================================
+   Video Meet Call Screen Responsiveness
+   ========================================================================== */
+.meet-wrapper {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-app);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.meet-header {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 50;
+  gap: 10px;
+  padding-top: max(10px, var(--sat));
+}
+
+.meet-workspace {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  gap: 10px;
+}
+
+.meet-video-grid {
+  flex: 1;
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.meet-footer {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  z-index: 50;
+  padding-bottom: max(10px, var(--sab));
+}
+
+/* Mobile Drawer Overlay for In-Meeting Chat & Participants */
+@media (max-width: 768px) {
+  .meet-drawer-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 70;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: flex-end;
+    animation: fadeIn 0.15s ease-out;
+  }
+  .meet-drawer-overlay .chat-sidebar {
+    width: 100% !important;
+    max-width: 360px;
+    height: 100% !important;
+    border-radius: 0 !important;
+    border-left: 1px solid var(--border-default);
+    animation: slideRight 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
 /* Toast */
 .toast-container {
   position: fixed;
-  bottom: 20px;
+  bottom: max(20px, var(--sab));
   right: 20px;
   z-index: 2000;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-width: calc(100vw - 40px);
 }
 
 .toast {
@@ -620,4 +976,13 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
+  word-break: break-word;
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    right: 12px;
+    left: 12px;
+    bottom: max(12px, var(--sab));
+  }
 }

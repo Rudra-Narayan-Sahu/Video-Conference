@@ -42,7 +42,7 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', borderBottom: '1px solid var(--border-subtle)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Settings2 size={16} className="text-blue-400" />
             <span style={{ fontSize: '15px', fontWeight: 600, color: '#fff' }}>Audio & Video Check</span>
@@ -50,14 +50,15 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
           <button 
             onClick={onClose}
             className="btn-ghost" 
-            style={{ padding: '4px', borderRadius: '50%' }}
+            style={{ padding: '6px', borderRadius: '50%' }}
+            aria-label="Close Preview Modal"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: 'clamp(14px, 3vw, 20px)' }}>
           {/* Camera View Area */}
           <div style={{ 
             position: 'relative', 
@@ -76,9 +77,10 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
                 <img 
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" 
                   alt="Camera Preview" 
+                  loading="lazy"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
-                <div style={{ position: 'absolute', bottom: '10px', left: '10px', background: 'rgba(0,0,0,0.6)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: '#10b981' }}>
+                <div style={{ position: 'absolute', bottom: '10px', left: '10px', background: 'rgba(0,0,0,0.65)', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', color: '#10b981' }}>
                   ● Camera Active
                 </div>
               </div>
@@ -94,16 +96,18 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
               <button 
                 onClick={() => setMicEnabled(!micEnabled)}
                 className={`dock-btn ${!micEnabled ? 'off' : ''}`}
-                style={{ width: '34px', height: '34px' }}
+                style={{ width: '36px', height: '36px' }}
                 title={micEnabled ? 'Mute' : 'Unmute'}
+                aria-label="Toggle Mic"
               >
                 {micEnabled ? <Mic size={15} /> : <MicOff size={15} />}
               </button>
               <button 
                 onClick={() => setCamEnabled(!camEnabled)}
                 className={`dock-btn ${!camEnabled ? 'off' : ''}`}
-                style={{ width: '34px', height: '34px' }}
+                style={{ width: '36px', height: '36px' }}
                 title={camEnabled ? 'Turn Off' : 'Turn On'}
+                aria-label="Toggle Camera"
               >
                 {camEnabled ? <Video size={15} /> : <VideoOff size={15} />}
               </button>
@@ -145,7 +149,7 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
                 background: 'var(--bg-app)',
                 border: '1px solid var(--border-default)',
                 borderRadius: '8px',
-                padding: '8px 12px',
+                padding: '9px 12px',
                 color: '#fff',
                 fontSize: '14px',
                 outline: 'none'
@@ -161,14 +165,14 @@ export default function DevicePreviewModal({ isOpen, onClose, onConfirmJoin, roo
             <button 
               onClick={onClose}
               className="btn-secondary" 
-              style={{ flex: 1, padding: '9px' }}
+              style={{ flex: 1, padding: '10px', fontSize: '13px' }}
             >
               Cancel
             </button>
             <button 
               onClick={handleJoin}
               className="btn-primary" 
-              style={{ flex: 2, padding: '9px' }}
+              style={{ flex: 2, padding: '10px', fontSize: '14px' }}
             >
               Join Meeting
               <ArrowRight size={15} />

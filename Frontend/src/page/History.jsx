@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import withAuth from '../utils/withAuth';
-import { Video, Clock, Copy, Check, ArrowLeft, Search, Calendar, RefreshCw } from 'lucide-react';
+import { Video, Copy, Check, ArrowLeft, Search, Calendar, RefreshCw } from 'lucide-react';
 
 function HistoryComponent() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function HistoryComponent() {
   );
 
   return (
-    <div className="app-container" style={{ minHeight: '100vh', paddingBottom: '60px' }}>
+    <div className="app-container" style={{ minHeight: '100dvh', paddingBottom: '60px' }}>
       {/* Header */}
       <header className="navbar-wrapper">
         <nav className="navbar">
@@ -52,21 +52,21 @@ function HistoryComponent() {
             <span>AuraMeet</span>
           </Link>
 
-          <Link to="/home" className="btn-secondary" style={{ padding: '6px 14px', fontSize: '13px' }}>
+          <Link to="/home" className="btn-secondary" style={{ padding: '6px 12px', fontSize: '13px' }}>
             <ArrowLeft size={14} />
             Dashboard
           </Link>
         </nav>
       </header>
 
-      <main className="section-container" style={{ maxWidth: '900px', paddingTop: '40px' }}>
+      <main className="section-container" style={{ maxWidth: '900px', paddingTop: 'clamp(20px, 4vw, 40px)' }}>
         {/* Header */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '20px' }}>
           <div>
-            <h1 style={{ fontSize: '24px', fontWeight: 700, color: '#fff', marginBottom: '4px' }}>
+            <h1 style={{ fontSize: 'clamp(20px, 4vw, 24px)', fontWeight: 700, color: '#fff', marginBottom: '4px' }}>
               Meeting History
             </h1>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>
               Previous meetings associated with your account.
             </p>
           </div>
@@ -94,7 +94,7 @@ function HistoryComponent() {
               background: 'var(--bg-surface)',
               border: '1px solid var(--border-default)',
               borderRadius: '8px',
-              padding: '10px 14px 10px 38px',
+              padding: '9px 14px 9px 38px',
               color: '#fff',
               fontSize: '13px',
               outline: 'none'
@@ -104,7 +104,7 @@ function HistoryComponent() {
 
         {/* List */}
         {loading ? (
-          <div className="panel" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
+          <div className="panel" style={{ padding: '36px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
             Loading history...
           </div>
         ) : filteredMeetings.length > 0 ? (
@@ -117,29 +117,32 @@ function HistoryComponent() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '14px 18px',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  padding: '12px 16px',
                   borderRadius: '10px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
                   <div className="brand-icon" style={{ width: '32px', height: '32px' }}>
-                    <Video size={16} />
+                    <Video size={15} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: '15px', fontWeight: 600, color: '#fff' }}>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {m.meetingCode}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                       {new Date(m.date || m.createdAt).toLocaleDateString()} at {new Date(m.date || m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
                   <button 
                     onClick={() => handleCopy(m.meetingCode)}
                     className="btn-ghost" 
-                    style={{ padding: '6px 10px', fontSize: '12px', border: '1px solid var(--border-default)' }}
+                    style={{ padding: '5px 10px', fontSize: '12px', border: '1px solid var(--border-default)' }}
+                    aria-label="Copy meeting code"
                   >
                     {copiedCode === m.meetingCode ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
                     <span>{copiedCode === m.meetingCode ? 'Copied' : 'Copy'}</span>
@@ -147,7 +150,7 @@ function HistoryComponent() {
                   <button 
                     onClick={() => navigate(`/${m.meetingCode}`)}
                     className="btn-primary" 
-                    style={{ padding: '6px 14px', fontSize: '12px' }}
+                    style={{ padding: '5px 12px', fontSize: '12px' }}
                   >
                     Re-Join
                   </button>
@@ -156,9 +159,9 @@ function HistoryComponent() {
             ))}
           </div>
         ) : (
-          <div className="panel" style={{ padding: '48px 20px', textAlign: 'center' }}>
-            <Calendar size={36} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>No meeting history found.</p>
+          <div className="panel" style={{ padding: '44px 20px', textAlign: 'center' }}>
+            <Calendar size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>No meeting history found.</p>
           </div>
         )}
       </main>

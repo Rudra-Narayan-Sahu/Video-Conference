@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import { 
   Grid, 
   UserCheck, 
-  Edit3, 
   ScreenShare, 
-  Send, 
-  MessageSquare, 
-  CheckCircle2, 
-  Sparkles
+  Send
 } from 'lucide-react';
 
 export default function MeetingPlayground() {
@@ -48,85 +44,85 @@ export default function MeetingPlayground() {
         </p>
       </div>
 
-      <div className="panel" style={{ padding: '20px' }}>
+      <div className="panel" style={{ padding: 'clamp(14px, 3vw, 20px)' }}>
         {/* Layout Tabs */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', gap: '6px', background: 'var(--bg-surface-elevated)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+          <div className="playground-tabs">
             <button 
               className={`btn-ghost ${activeTab === 'grid' ? 'active' : ''}`}
-              style={{ padding: '6px 14px', fontSize: '13px', background: activeTab === 'grid' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'grid' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px' }}
+              style={{ padding: '6px 12px', fontSize: '13px', background: activeTab === 'grid' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'grid' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px', whiteSpace: 'nowrap' }}
               onClick={() => setActiveTab('grid')}
             >
-              <Grid size={15} />
+              <Grid size={14} />
               Grid View
             </button>
             <button 
               className={`btn-ghost ${activeTab === 'spotlight' ? 'active' : ''}`}
-              style={{ padding: '6px 14px', fontSize: '13px', background: activeTab === 'spotlight' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'spotlight' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px' }}
+              style={{ padding: '6px 12px', fontSize: '13px', background: activeTab === 'spotlight' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'spotlight' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px', whiteSpace: 'nowrap' }}
               onClick={() => setActiveTab('spotlight')}
             >
-              <UserCheck size={15} />
+              <UserCheck size={14} />
               Speaker View
             </button>
             <button 
               className={`btn-ghost ${activeTab === 'screenshare' ? 'active' : ''}`}
-              style={{ padding: '6px 14px', fontSize: '13px', background: activeTab === 'screenshare' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'screenshare' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px' }}
+              style={{ padding: '6px 12px', fontSize: '13px', background: activeTab === 'screenshare' ? 'var(--bg-app)' : 'transparent', color: activeTab === 'screenshare' ? '#fff' : 'var(--text-secondary)', borderRadius: '6px', whiteSpace: 'nowrap' }}
               onClick={() => setActiveTab('screenshare')}
             >
-              <ScreenShare size={15} />
+              <ScreenShare size={14} />
               Screen Share
             </button>
           </div>
 
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             <span>Room ID: aur-product-sync</span>
           </div>
         </div>
 
         {/* Content Body */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', minHeight: '440px' }}>
+        <div className="playground-layout-grid">
           {/* Main Stage */}
-          <div style={{ background: '#0a0c10', borderRadius: '12px', border: '1px solid var(--border-subtle)', overflow: 'hidden', padding: activeTab === 'grid' ? '12px' : '0' }}>
+          <div style={{ background: '#0a0c10', borderRadius: '12px', border: '1px solid var(--border-subtle)', overflow: 'hidden', padding: activeTab === 'grid' ? '10px' : '0', minHeight: '260px' }}>
             {activeTab === 'grid' && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', height: '100%' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', height: '100%', minHeight: '240px' }}>
                 {["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80", "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80"].map((img, i) => (
-                  <div key={i} style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', background: '#11141c' }}>
-                    <img src={img} alt="Participant" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div key={i} style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', background: '#11141c', aspectRatio: '16 / 9' }}>
+                    <img src={img} alt="Participant" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 ))}
               </div>
             )}
 
             {activeTab === 'spotlight' && (
-              <div style={{ position: 'relative', height: '100%' }}>
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80" alt="Speaker" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{ position: 'absolute', bottom: '16px', left: '16px', background: 'rgba(0,0,0,0.7)', padding: '6px 12px', borderRadius: '6px', fontSize: '13px', color: '#fff' }}>
+              <div style={{ position: 'relative', height: '100%', minHeight: '280px' }}>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80" alt="Speaker" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', bottom: '12px', left: '12px', background: 'rgba(0,0,0,0.7)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: '#fff' }}>
                   Sarah Chen (Speaking)
                 </div>
               </div>
             )}
 
             {activeTab === 'screenshare' && (
-              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
-                <div className="brand-icon" style={{ width: '44px', height: '44px', marginBottom: '12px' }}>
-                  <ScreenShare size={22} />
+              <div style={{ height: '100%', minHeight: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
+                <div className="brand-icon" style={{ width: '40px', height: '40px', marginBottom: '12px' }}>
+                  <ScreenShare size={20} />
                 </div>
-                <h4 style={{ fontSize: '16px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>Alex Rivera is sharing screen</h4>
+                <h4 style={{ fontSize: '15px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>Alex Rivera is sharing screen</h4>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>1080p 60 FPS presentation stream</p>
               </div>
             )}
           </div>
 
           {/* Chat Sidebar */}
-          <div className="chat-sidebar" style={{ borderRadius: '12px' }}>
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border-subtle)', fontSize: '13px', fontWeight: 600, color: '#fff' }}>
+          <div className="chat-sidebar" style={{ borderRadius: '12px', minHeight: '260px' }}>
+            <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border-subtle)', fontSize: '13px', fontWeight: 600, color: '#fff' }}>
               Meeting Chat
             </div>
 
-            <div className="chat-messages">
+            <div className="chat-messages" style={{ maxHeight: '260px' }}>
               {chatMessages.map(msg => (
                 <div key={msg.id} className={`chat-bubble ${msg.isSelf ? 'sent' : 'received'}`}>
-                  <div style={{ fontSize: '11px', opacity: 0.8, marginBottom: '2px' }}>
+                  <div style={{ fontSize: '10px', opacity: 0.8, marginBottom: '2px' }}>
                     {msg.sender} • {msg.time}
                   </div>
                   <div>{msg.text}</div>
@@ -134,7 +130,7 @@ export default function MeetingPlayground() {
               ))}
             </div>
 
-            <form onSubmit={handleSendMessage} style={{ padding: '10px', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '6px' }}>
+            <form onSubmit={handleSendMessage} style={{ padding: '8px', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '6px' }}>
               <input 
                 type="text"
                 value={inputText}
@@ -145,14 +141,15 @@ export default function MeetingPlayground() {
                   background: 'var(--bg-app)',
                   border: '1px solid var(--border-default)',
                   borderRadius: '6px',
-                  padding: '8px 10px',
+                  padding: '7px 10px',
                   color: '#fff',
                   fontSize: '13px',
-                  outline: 'none'
+                  outline: 'none',
+                  minWidth: 0
                 }}
               />
-              <button type="submit" className="btn-primary" style={{ padding: '8px 12px', borderRadius: '6px' }}>
-                <Send size={13} />
+              <button type="submit" className="btn-primary" style={{ padding: '7px 12px', borderRadius: '6px', flexShrink: 0 }}>
+                <Send size={12} />
               </button>
             </form>
           </div>

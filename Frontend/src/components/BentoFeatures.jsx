@@ -1,13 +1,10 @@
 import React from 'react';
 import { 
   ShieldCheck, 
-  Volume2, 
-  Globe, 
   Share2, 
   Zap, 
   Lock, 
-  MessageSquare,
-  Users
+  MessageSquare
 } from 'lucide-react';
 
 export default function BentoFeatures() {
@@ -38,7 +35,7 @@ export default function BentoFeatures() {
             </p>
           </div>
 
-          <div style={{ marginTop: '20px', display: 'flex', gap: '16px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+          <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '20px', borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
             <div>
               <div style={{ fontSize: '18px', fontWeight: 700, color: '#10b981' }}>&lt; 25ms</div>
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Direct P2P Latency</div>
@@ -101,7 +98,7 @@ export default function BentoFeatures() {
             </p>
           </div>
 
-          <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+          <div style={{ marginTop: '16px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '14px', fontSize: '12px', color: 'var(--text-secondary)' }}>
             <span>✓ Room-isolated messaging</span>
             <span>✓ Unread counter badges</span>
             <span>✓ Live timestamping</span>

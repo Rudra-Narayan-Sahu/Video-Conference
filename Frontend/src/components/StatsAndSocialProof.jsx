@@ -1,5 +1,4 @@
 import React from 'react';
-import { Star } from 'lucide-react';
 
 export default function StatsAndSocialProof() {
   const stats = [
@@ -14,15 +13,15 @@ export default function StatsAndSocialProof() {
   ];
 
   return (
-    <section className="section-container" style={{ paddingTop: '20px', paddingBottom: '40px' }}>
+    <section className="section-container" style={{ paddingTop: '20px', paddingBottom: '30px' }}>
       {/* Logos Strip */}
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <p style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '18px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1.2px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '16px' }}>
           POWERING VIDEO COLLABORATION FOR TEAMS WORLDWIDE
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '36px', opacity: 0.7 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 'clamp(16px, 4vw, 36px)', opacity: 0.75 }}>
           {companies.map((c, i) => (
-            <span key={i} style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-secondary)' }}>
+            <span key={i} style={{ fontSize: 'clamp(14px, 2.5vw, 17px)', fontWeight: 700, color: 'var(--text-secondary)' }}>
               {c}
             </span>
           ))}

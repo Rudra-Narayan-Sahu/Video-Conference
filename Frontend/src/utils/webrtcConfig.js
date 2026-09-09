@@ -17,4 +17,5 @@ export const iceServers = {
   iceCandidatePoolSize: 10
 };
 
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+// Deployed Render backend URL with environment override support
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://video-conferencee.onrender.com';
